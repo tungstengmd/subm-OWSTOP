@@ -12,7 +12,7 @@ namespace subm_OWSTOP {
             return 1;
         }
         static int passcheck(string pass) {
-            Regex reg = new Regex(@"(\w)|(\W)");
+            Regex reg = new Regex(@"[a-zA-Z]|(\W)");
             Console.Write("enter a password [MUST BE AT LEAST 10 CHARACTERS AND MUST HAVE BOTH LETTERS AND NON-LETTERS]\n% ");
             if (pass.Length > 9 && reg.IsMatch(pass)) return 0;
             return 1;
