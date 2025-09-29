@@ -10,30 +10,31 @@ internal class Program {
     static void Main() {
         switch (Menu()) {
             case 1:
-                Write(PassCheck(ReadLine()!));
+                PassCheck();
                 break;
             case 2:
-                Write(Range());
+                Range();
                 break;
             default:
                 ExitCode = 0;
                 break;
         }
-        Write("\x1b[?1049h");
+        Write("\x1b[?1049l");
     }
-    static int Range() {
+    static void Range() {
         Clear();
         Write("enter a comma-separated list of numbers [1: num to check, 2: inclusive minimum, 3: inclusive maximum]\n% ");
         int[] args = Array.ConvertAll(ReadLine()!.Split(","), int.Parse);
-        if (args[0] > args[1] && args[0] < args[2]) return 0;
-        ExitCode = 1;
-        return ExitCode;
+        if (args[0] > args[1] && args[0] < args[2]) ExitCode = 0; else ExitCode = 1;
     }
-    static int PassCheck(string pass) {
+    static void PassCheck() {
         Clear();
-        Regex reg = new Regex(@"[a-zA-Z]|(\W)");
+        string[] reg = { @"[a-zA-Z]", @"\W" };
         Write("enter a password [MUST BE AT LEAST 10 CHARACTERS AND MUST HAVE BOTH LETTERS AND NON-LETTERS]\n% ");
-        if (pass.Length > 9 && reg.IsMatch(pass)) return 0;
-        return 1;
+        string pass = ReadLine()!;
+        ExitCode = 1;
+        if (pass.Length > 9) { WriteLine("Length >= 10? TRUE"); ExitCode = 0; } else WriteLine("Length >= 10? FALSE");
+        if (Regex.IsMatch(pass, reg[0])) { WriteLine("Letters? TRUE"); ExitCode = 0; } else WriteLine("Letters? FALSE");
+        if (Regex.IsMatch(pass, reg[1])) { WriteLine("Non-letters? TRUE"); ExitCode = 0; } else WriteLine("Non-letters? FALSE");
     }
 }
